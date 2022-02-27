@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Index</title>
+</head>
+<body>
+<script>
+  const win = window.open('https://music.yandex.ru');
+  const ws = new WebSocket('ws://localhost:3883');
+
+  ws.addEventListener('message', ({data}) => {
+    win.postMessage(data, 'https://music.yandex.ru');
+  });
+</script>
+</body>
+</html>
