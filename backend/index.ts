@@ -4,11 +4,18 @@ import * as path from 'path';
 import * as ws from 'ws';
 
 const indexFilePath = path.resolve(__dirname, 'index.html');
+const musicJsPath = path.resolve(__dirname, 'music.js');
 
 const httpServer = http.createServer(async (req, res) => {
   switch (req.url) {
     case '/': {
       return fs.createReadStream(indexFilePath).pipe(res);
+    }
+
+    case '/music.js': {
+      res.setHeader('Content-Type', 'application/javascript');
+
+      return fs.createReadStream(musicJsPath).pipe(res);
     }
 
     case '/startBoss': {

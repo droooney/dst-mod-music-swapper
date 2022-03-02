@@ -6,7 +6,7 @@
 </head>
 <body>
 <script>
-  const win = window.open('https://music.yandex.ru');
+  const win = window.open('https://music.yandex.ru/users/droooney/playlists');
   const ws = new WebSocket('ws://localhost:3883');
 
   ws.addEventListener('message', ({data}) => {
