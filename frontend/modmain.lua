@@ -43,14 +43,6 @@ function stopBossMusic(inst)
     end)
 end
 
-AddPrefabPostInit("world", function (inst)
-    GLOBAL.TheSim:QueryServer("http://localhost:3883", function (_, isSuccess)
-        if isSuccess then
-
-        end
-    end)
-end)
-
 AddPlayerPostInit(function (inst)
     inst:ListenForEvent("triggeredevent", function (_, data)
         if not findBoss(data.name) then
