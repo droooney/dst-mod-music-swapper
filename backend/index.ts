@@ -7,7 +7,13 @@ const indexFilePath = path.resolve(__dirname, 'index.html');
 const musicJsPath = path.resolve(__dirname, 'music.js');
 
 const httpServer = http.createServer(async (req, res) => {
-  switch (req.url) {
+  if (!req.url) {
+    return res.end();
+  }
+
+  const url = new URL(`http://localhost${req.url}`);
+
+  switch (url.pathname) {
     case '/': {
       return fs.createReadStream(indexFilePath).pipe(res);
     }
@@ -45,14 +51,14 @@ wsServer.on('connection', () => {
 });
 
 async function handleStartBoss(req: http.IncomingMessage, res: http.ServerResponse) {
-  console.log('start boss');
+  console.log('start boss', getBossName(req));
   sendToAllClients('stopMusic');
 
   res.end();
 }
 
 async function handleEndBoss(req: http.IncomingMessage, res: http.ServerResponse) {
-  console.log('end boss');
+  console.log('end boss', getBossName(req));
   sendToAllClients('startMusic');
 
   res.end();
@@ -62,4 +68,12 @@ function sendToAllClients(message: string) {
   for (const socket of wsServer.clients) {
     socket.send(message);
   }
+}
+
+function getBossName(req: http.IncomingMessage): string | null {
+  if (!req.url) {
+    return null;
+  }
+
+  return new URL(`http://localhost${req.url}`).searchParams.get('bossName');
 }

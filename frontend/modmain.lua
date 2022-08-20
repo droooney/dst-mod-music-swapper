@@ -27,20 +27,18 @@ function findBoss(boss)
     return false
 end
 
-function startBossMusic()
+function startBossMusic(bossName)
     playingMusic = true
 
-    GLOBAL.TheSim:QueryServer("http://localhost:3883/startBoss", function () end)
+    GLOBAL.TheSim:QueryServer("http://localhost:3883/startBoss?bossName=" .. bossName, function () end)
     GLOBAL.TheMixer:SetLevel("set_music", 0.2)
 end
 
-function stopBossMusic(inst)
-    inst:DoTaskInTime(3, function ()
-        playingMusic = false
+function stopBossMusic(bossName)
+    playingMusic = false
 
-        GLOBAL.TheSim:QueryServer("http://localhost:3883/endBoss", function () end)
-        GLOBAL.TheMixer:SetLevel("set_music", 0)
-    end)
+    GLOBAL.TheSim:QueryServer("http://localhost:3883/endBoss?bossName=" .. bossName, function () end)
+    GLOBAL.TheMixer:SetLevel("set_music", 0)
 end
 
 AddPlayerPostInit(function (inst)
@@ -50,15 +48,15 @@ AddPlayerPostInit(function (inst)
         end
 
         if not playingMusic then
-            startBossMusic(inst)
+            startBossMusic(data.name)
         end
 
         if stopMusicTask then
             stopMusicTask:Cancel()
         end
 
-        stopMusicTask = inst:DoTaskInTime(2, function ()
-            stopBossMusic(inst)
+        stopMusicTask = inst:DoTaskInTime(15, function ()
+            stopBossMusic(data.name)
         end)
     end)
 end)
