@@ -30,14 +30,14 @@ end
 function startBossMusic(bossName)
     playingMusic = true
 
-    GLOBAL.TheSim:QueryServer("http://localhost:3883/startBoss?bossName=" .. bossName, function () end)
+    GLOBAL.TheSim:QueryServer("http://localhost:3883/api/startBoss?bossName=" .. bossName, function () end)
     GLOBAL.TheMixer:SetLevel("set_music", 0.2)
 end
 
 function stopBossMusic(bossName)
     playingMusic = false
 
-    GLOBAL.TheSim:QueryServer("http://localhost:3883/endBoss?bossName=" .. bossName, function () end)
+    GLOBAL.TheSim:QueryServer("http://localhost:3883/api/endBoss?bossName=" .. bossName, function () end)
     GLOBAL.TheMixer:SetLevel("set_music", 0)
 end
 
